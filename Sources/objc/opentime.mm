@@ -42,7 +42,7 @@ CxxRationalTime rational_time_duration_from_start_end_time(CxxRationalTime s, Cx
 }
 
 bool rational_time_is_valid_timecode_rate(double rate) {
-    return otio::RationalTime::is_valid_timecode_rate(rate);
+    return otio::RationalTime::is_smpte_timecode_rate(rate);
 }
 
 static inline void deal_with_error(opentime::ErrorStatus const& error_status, CxxErrorStruct* err) {

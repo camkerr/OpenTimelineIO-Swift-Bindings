@@ -33,21 +33,24 @@ let package = Package(
         .target(name: "OpenTime_CXX",
             dependencies: ["otio_header_root"],
             path: "OpenTimelineIO/src/opentime",
-            exclude: ["CMakeLists.txt", "OpenTimeConfig.cmake.in"],
+            exclude: ["CMakeLists.txt", "OpenTimeConfig.cmake.in", "version.h.in"],
             sources: ["."],
             publicHeadersPath: ".",
-            cxxSettings: [ .headerSearchPath(".")]),
+            cxxSettings: [
+                .headerSearchPath("."),
+                .headerSearchPath("../../../Sources/cpp")]),
 
         .target(name: "OpenTimelineIO_CXX",
             dependencies: ["OpenTime_CXX"],
             path: "OpenTimelineIO/src/opentimelineio",
-            exclude: ["CMakeLists.txt", "CORE_VERSION_MAP.last.cpp", "OpenTimelineIOConfig.cmake.in"],
+            exclude: ["CMakeLists.txt", "CORE_VERSION_MAP.last.cpp", "OpenTimelineIOConfig.cmake.in", "version.h.in"],
             sources: ["."],
             publicHeadersPath: ".",
             cxxSettings: [
                 .headerSearchPath("."),
                 .headerSearchPath("../deps/any/"),
                 .headerSearchPath("../deps/Imath/src/Imath"),
+                .headerSearchPath("../deps/Imath/src"),
                 .headerSearchPath("../../../Sources/cpp"),
                 .headerSearchPath("../deps/rapidjson/include")]),
 
@@ -59,6 +62,7 @@ let package = Package(
             publicHeadersPath: "objc/include",
             cxxSettings: [
                 .headerSearchPath("../OpenTimelineIO/src/deps/Imath/src/Imath"),
+                .headerSearchPath("../OpenTimelineIO/src/deps/Imath/src"),
                 .headerSearchPath("../Sources/cpp"),
                 .headerSearchPath("objc/include")]),
 
