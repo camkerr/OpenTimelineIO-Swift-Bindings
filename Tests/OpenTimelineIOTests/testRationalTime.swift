@@ -151,25 +151,26 @@ class testRationalTime: XCTestCase {
     
     func testTimecode23976FPS() {
         // This should behave exactly like 24 fps
+        let rate = 24000.0 / 1001.0
         var timecode = "00:00:01:00"
-        var t = RationalTime(value: 24, rate: 23.976)
-        XCTAssertEqual(t, try! RationalTime.from(timecode: timecode, rate: 23.976))
-     
+        var t = RationalTime(value: 24, rate: rate)
+        XCTAssertEqual(t, try! RationalTime.from(timecode: timecode, rate: rate))
+
         timecode = "00:01:00:00"
-        t = RationalTime(value: 24 * 60, rate: 23.976)
-        XCTAssertEqual(t, try! RationalTime.from(timecode: timecode, rate: 23.976))
+        t = RationalTime(value: 24 * 60, rate: rate)
+        XCTAssertEqual(t, try! RationalTime.from(timecode: timecode, rate: rate))
 
         timecode = "01:00:00:00"
-        t = RationalTime(value: 24 * 60 * 60, rate: 23.976)
-        XCTAssertEqual(t, try! RationalTime.from(timecode: timecode, rate: 23.976))
-     
+        t = RationalTime(value: 24 * 60 * 60, rate: rate)
+        XCTAssertEqual(t, try! RationalTime.from(timecode: timecode, rate: rate))
+
         timecode = "24:00:00:00"
-        t = RationalTime(value: 24 * 60 * 60 * 24, rate: 23.976)
-        XCTAssertEqual(t, try! RationalTime.from(timecode: timecode, rate: 23.976))
-     
+        t = RationalTime(value: 24 * 60 * 60 * 24, rate: rate)
+        XCTAssertEqual(t, try! RationalTime.from(timecode: timecode, rate: rate))
+
         timecode = "23:59:59:23"
-        t = RationalTime(value: 24 * 60 * 60 * 24 - 1, rate: 23.976)
-        XCTAssertEqual(t, try! RationalTime.from(timecode: timecode, rate: 23.976))
+        t = RationalTime(value: 24 * 60 * 60 * 24 - 1, rate: rate)
+        XCTAssertEqual(t, try! RationalTime.from(timecode: timecode, rate: rate))
     }
  
     func testConvertingNegativeValuesToTimecode() {
@@ -188,12 +189,13 @@ class testRationalTime: XCTestCase {
             (17984, "00:10:00:02", "00:10:00;02")
         ]
      
+        let rate = 30000.0 / 1001.0
         for (value, colon_tc, tc) in refColonValues {
-            let t = RationalTime(value: Double(value), rate: 29.97)
-            XCTAssertEqual(tc, try t.toTimecode(rate: 29.97))
-            let to_tc = try! t.toTimecode(rate: 29.97)
+            let t = RationalTime(value: Double(value), rate: rate)
+            XCTAssertEqual(tc, try t.toTimecode(rate: rate))
+            let to_tc = try! t.toTimecode(rate: rate)
             XCTAssertNotEqual(colon_tc, to_tc)
-            let t1 = try! RationalTime.from(timecode: tc, rate: 29.97)
+            let t1 = try! RationalTime.from(timecode: tc, rate: rate)
             XCTAssertEqual(t, t1)
         }
     }
@@ -203,9 +205,9 @@ class testRationalTime: XCTestCase {
     }
 
     func testInvalidToTimecode() {
-        let t = RationalTime(value: 100, rate: 29.98)
-     
-        try XCTAssertThrowsError(t.toTimecode(rate: 29.98))
+        let t = RationalTime(value: 100, rate: 29.5)
+
+        try XCTAssertThrowsError(t.toTimecode(rate: 29.5))
         try XCTAssertThrowsError(t.toTimecode())
     }
      
@@ -415,7 +417,7 @@ class testRationalTime: XCTestCase {
         let t = try! RationalTime.from(timecode: timecode, rate: 24)
         XCTAssertEqual(timecode, try! t.toTimecode())
         XCTAssertEqual(timecode, try! t.toTimecode(rate: 24))
-        XCTAssertNotEqual(timecode, try! t.toTimecode(rate: 12))
+        XCTAssertNotEqual(timecode, try! t.toTimecode(rate: 30))
     }
     
     func testToFramesMixed() {
